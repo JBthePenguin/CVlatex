@@ -1,0 +1,484 @@
+\documentclass[10pt,A4]{article}
+
+%============================================================================%
+%
+%	DOCUMENT DEFINITION
+%
+%============================================================================%
+%----------------------------------------------------------------------------------------
+%	ENCODING
+%----------------------------------------------------------------------------------------
+\usepackage[utf8]{inputenc}		
+%----------------------------------------------------------------------------------------
+%	LOGIC
+%----------------------------------------------------------------------------------------
+\usepackage{xstring, xifthen}
+%----------------------------------------------------------------------------------------
+%	FONT BASICS
+%----------------------------------------------------------------------------------------
+\usepackage{mathptmx}
+% set font default
+\renewcommand*\familydefault{\sfdefault} 	
+\usepackage[T1]{fontenc}
+% more font size definitions
+\usepackage{moresize}
+%----------------------------------------------------------------------------------------
+% use to vertically center icon
+% credits to: http://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other
+\newcommand{\vcenteredinclude}[1]{\begingroup
+\setbox0=\hbox{\includegraphics[width=4mm, height=5mm]{#1}}%
+\parbox{\wd0}{\box0}\endgroup}
+%----------------------------------------------------------------------------------------
+%	PAGE LAYOUT  DEFINITIONS
+%----------------------------------------------------------------------------------------
+% we use paracol to display breakable two columns
+\usepackage{paracol}
+% define page styles using geometry
+\usepackage[a4paper]{geometry}
+% remove all possible margins
+\geometry{top=1cm, bottom=1cm, left=1cm, right=1cm}
+\usepackage{fancyhdr}
+\pagestyle{empty}
+% indentation is zero
+\setlength{\parindent}{0mm}
+%----------------------------------------------------------------------------------------
+%	TABLE /ARRAY DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+% extended aligning of tabular cells
+\usepackage{array}
+%----------------------------------------------------------------------------------------
+%	GRAPHICS DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+\usepackage{graphicx}
+\usepackage{tikz}				
+\usetikzlibrary{shapes, backgrounds, mindmap, trees}
+%----------------------------------------------------------------------------------------
+%	Color DEFINITIONS
+%---------------------------------------------------------------------------------------- 
+\usepackage{transparent}
+\usepackage{color}
+% primary color
+\definecolor{maincol}{RGB}{ 225, 0, 0 }
+% dark color
+\definecolor{darkcol}{RGB}{ 70, 70, 70 }
+% light color
+\definecolor{lightcol}{RGB}{245,245,245}
+
+% Package for links, must be the last package used
+\usepackage[hidelinks]{hyperref}
+% returns minipage width minus two times \fboxsep
+% to keep padding included in width calculations
+% can also be used for other boxes / environments
+\newcommand{\mpwidth}{\linewidth-\fboxsep-\fboxsep}
+%============================================================================%
+%
+%	CV COMMANDS
+%
+%============================================================================%
+%----------------------------------------------------------------------------------------
+%	 CV LIST
+%----------------------------------------------------------------------------------------
+% renders a standard latex list but abstracts away the environment definition (begin/end)
+\newcommand{\cvlist}[1] {
+	\begin{itemize}{#1}\end{itemize}
+}
+%----------------------------------------------------------------------------------------
+%	 CV TEXT
+%----------------------------------------------------------------------------------------
+% base class to wrap any text based stuff here. Renders like a paragraph.
+% Allows complex commands to be passed, too.
+% param 1: *any
+\newcommand{\cvtext}[1] {
+	\begin{tabular*}{1\mpwidth}{p{0.98\mpwidth}}
+		\parbox{1\mpwidth}{#1}
+	\end{tabular*}
+}
+%----------------------------------------------------------------------------------------
+%	CV SECTION AND SUBSECTION
+%----------------------------------------------------------------------------------------
+% Renders a a CV section headline with a nice underline in main color.
+% param 1: section title
+\newcommand{\cvsection}[1] {
+	\vspace{8pt}
+	\cvtext{
+		\textbf{\LARGE{\textcolor{darkcol}{\texttt{#1}}}}\\[-7pt]
+		\textcolor{maincol}{ \rule{0.075\textwidth}{1.25pt} }
+	}
+}
+
+\newcommand{\cvsubsection}[1] {
+	\vspace{10pt}
+	\cvtext{
+		\textit{\large{\textcolor{darkcol}{\textbf{#1}}}}
+	}
+	\vspace{5pt}
+}
+%----------------------------------------------------------------------------------------
+%	META SKILL
+%----------------------------------------------------------------------------------------
+% Renders a progress-bar to indicate a certain skill in percent.
+% param 1: name of the skill / tech / etc.
+% param 2: level (for example in years)
+% param 3: percent, values range from 0 to 1
+\newcommand{\cvskill}[3] {
+  \vspace{2pt}
+  \hspace{2.5pt}
+	\begin{tabular*}{1\mpwidth}{p{0.3\mpwidth}  r}
+ 		\textcolor{black}{\texttt{#1}} & \begin{tikzpicture}[scale=1,rounded corners=2pt,very thin]
+		  \fill [maincol] (0,0) rectangle (#3\mpwidth, 0.1);
+  	\end{tikzpicture}%
+	\end{tabular*}%
+	\vspace{-4pt}
+}
+
+\newcommand{\cvskilltool}[3] {
+  \vspace{2pt}
+  \hspace{2.5pt}
+  \begin{tabular*}{1\mpwidth}{p{0.25\mpwidth} p{0.37\mpwidth}  r}
+  \textcolor{black}{\texttt{#1}} & {\tiny \textit{\textcolor{maincol}{#2}}} &	\begin{tikzpicture}[scale=1,rounded corners=2pt,very thin]
+		  \fill [maincol] (0,0) rectangle (#3\mpwidth, 0.1);
+  	\end{tikzpicture}%
+	\end{tabular*}%
+	\vspace{-4pt}
+}
+
+\newcommand{\cvcontact}[3] {
+  \vspace{4pt}
+  \hspace{1pt}
+	\begin{tabular*}{1\mpwidth}{p{0.05\mpwidth}  r}
+ 		\vcenteredinclude {#2} & \textcolor{black}{#1}
+	\end{tabular*}%
+	\vspace{2pt}
+}
+
+\newcommand{\cvsociallink}[3] {
+  \vspace{10pt}
+  \hspace{1.5pt}
+  \begin{tabular*}{1\mpwidth}{p{0.36\mpwidth} p{0.36\mpwidth}  r}
+  \href{https://github.com/JBthePenguin/}{\includegraphics[width=4mm, height=4.5mm]{#1}} & \href{https://twitter.com/JBthePenguin}{\includegraphics[width=4mm, height=4.5mm]{#2}} &	\href{https://www.linkedin.com/in/jean-baptiste-labaty-a5b084155/}{\includegraphics[width=4mm, height=4.5mm]{#3}}
+	\end{tabular*}%
+	\vspace{-40pt}
+}
+%----------------------------------------------------------------------------------------
+%	 CV EVENT
+%----------------------------------------------------------------------------------------
+% Renders a table and a paragraph (cvtext) wrapped in a parbox (to ensure minimum content
+% is glued together when a pagebreak appears).
+% Additional Information can be passed in text or list form (or other environments).
+% the work you did
+% param 1: time-frame i.e. Sep 14 - Jan 15 etc.
+% param 2:	 event name (job position etc.)
+% param 3: Customer, Employer, Industry
+% param 4: Short description
+% param 5: work done (optional)
+\newcommand{\cvrealase}[5] {
+	% we wrap this part in a parbox, so title and description are not separated on a pagebreak
+	% if you need more control on page breaks, remove the parbox
+	\vspace{4pt}
+	\parbox{\mpwidth}{
+		\begin{tabular*}{1\mpwidth}{p{0.7\mpwidth} r}
+	 		\textcolor{black}{\textbf{#2}} & \colorbox{maincol}{\makebox[0.25\mpwidth]{\textcolor{white}{#1}}} \\
+			\textcolor{maincol}{\textbf{#3}} & \\
+		\end{tabular*}
+		\ifthenelse{\isempty{#4}}{}{
+			\cvtext{#4}\\
+		}
+	  \vspace{4pt}
+	}
+  \vspace{-17.35pt}  
+	\ifthenelse{\isempty{#5}}{}{
+		\vspace{-1.5pt}
+		{#5}
+	}
+	\vspace{14pt}
+}
+
+\newcommand{\cvnewevent}[4] {
+	% we wrap this part in a parbox, so title and description are not separated on a pagebreak
+	% if you need more control on page breaks, remove the parbox
+	\vspace{4pt}
+	\parbox{\mpwidth}{
+		\begin{tabular*}{1\mpwidth}{p{0.625\mpwidth}  r}
+	 		\textcolor{black}{\textbf{#2}} & \colorbox{maincol}{\makebox[0.325\mpwidth]{\textcolor{white}{{\small #1}}}} \\[0pt]
+			\textcolor{maincol}{\textbf{#3}} & \\[-2.5pt]
+		\end{tabular*}
+		\cvtext{#4}
+	}
+	\vspace{-5pt}
+}
+
+\newcommand{\cvneweventdip}[3] {
+  % we wrap this part in a parbox, so title and description are not separated on a pagebreak
+	% if you need more control on page breaks, remove the parbox
+	\vspace{4pt}
+	\parbox{\mpwidth}{
+		\begin{tabular*}{1\mpwidth}{p{0.625\mpwidth}  r}
+	 		\textcolor{black}{\textbf{#2}} & \colorbox{maincol}{\makebox[0.325\mpwidth]{\textcolor{white}{{\small #1}}}} \\[0pt]
+			\textcolor{maincol}{\textbf{#3}} & \\[-2.5pt]
+		\end{tabular*}
+	}
+	\vspace{-5pt}
+}
+%----------------------------------------------------------------------------------------
+%	 CV META EVENT
+%----------------------------------------------------------------------------------------
+% Renders a CV event on the sidebar
+% param 1: title
+% param 2: subtitle (optional)
+% param 3: customer, employer, etc,. (optional)
+% param 4: info text (optional)
+\newcommand{\cvmetaevent}[4] {
+	\textcolor{maincol} {\cvtext{\textbf{\begin{flushleft}#1\end{flushleft}}}}
+	\ifthenelse{\isempty{#2}}{}{
+	\textcolor{darkcol} {\cvtext{\textbf{#2}} }
+	}
+	\ifthenelse{\isempty{#3}}{}{
+		\cvtext{{ \textcolor{darkcol} {#3} }}\\
+	}
+	\cvtext{#4}\\[14pt]
+}
+%============================================================================%
+%
+%
+%
+%	DOCUMENT CONTENT
+%
+%
+%
+%============================================================================%
+\begin{document}
+\columnratio{0.31}
+\setlength{\columnsep}{2.2em}
+\setlength{\columnseprule}{1.5pt}
+\colseprulecolor{darkcol}
+\begin{paracol}{2}
+%============================================================================%
+%
+%	Left side
+%
+%============================================================================%
+\begin{leftcolumn}
+% HEADER
+\fcolorbox{white}{darkcol}{\begin{minipage}[c][1.5cm][c]{1\mpwidth}
+\vspace{10pt}
+	\begin {center}
+	  \Large{ \textcolor{white} {Jean-Baptiste Labaty} } \\[-10pt]
+		\textcolor{white}{ \rule{0.2\textwidth}{1pt} } \\
+		\large{ \textbf{ \textcolor{white}{ Développeur d'application } } }
+	\end {center}
+\end{minipage}} \\[14pt]
+\vspace{-10pt}
+%---------------------------------------------------------------------------------------
+%	SKILLS
+%----------------------------------------------------------------------------------------
+\cvsection{Compétences}
+
+\cvsubsection{Backend}
+
+\cvskill{Python} {} {0.6}
+
+\cvskill{Bash} {} {0.3}
+
+\cvsubsection{Frontend}
+
+\cvskill{Html/CSS} {} {0.45}
+
+\cvskill{Javascript} {} {0.45}
+
+\cvsubsection{Frameworks}
+
+\cvskill{Django} {} {0.6}
+
+\cvskill{Flask} {} {0.3}
+
+\cvskill{Bootstrap} {} {0.45}
+
+\cvskill{JQuery} {} {0.45}
+
+\cvsubsection{Base de données}
+
+\cvskill{PostgreSQL} {} {0.6}
+
+\cvskill{MariaDB} {} {0.3}
+
+\cvskill{SQLite} {} {0.3}
+
+\cvsubsection{Système d'exploitation}
+
+\cvskill{Linux} {} {0.45}
+
+\cvsubsection{Outils}
+
+\cvskilltool{Git} {Versionning} {0.225}
+
+\cvskilltool{TravisCI} {Intégration continue} {0.15} 
+
+\cvskilltool{Sentry} {Monitoring} {0.15}
+
+\cvskilltool{NewRelic} {Monitoring} {0.15}
+
+\cvskilltool{UML} {Conception} {0.15}
+
+\cvskilltool{LaTeX} {Documentation} {0.15}
+
+\vspace{10pt}
+%---------------------------------------------------------------------------------------
+%	CONTACT
+%----------------------------------------------------------------------------------------
+\cvsection{Contact}
+
+\vspace{2.5pt}
+
+\cvcontact{Toulouse} {img/mapmarker.png} {}
+
+\cvcontact{01 02 03 04 05} {img/phone.png} {}
+
+\cvcontact{\href{mailto:jbthepenguin@netcourrier.com}{\textit{\underline{jbthepenguin@netcourrier.com}}}} {img/email.png} {}
+
+\cvcontact{\href{https://jbthepenguin.github.io/}{\textit{\underline{jbthepenguin.github.io}}}} {img/site.png} {}
+
+\cvsociallink{img/github.png} {img/twitter.png} {img/linkedin.png}
+
+\end{leftcolumn}
+
+%============================================================================%
+%
+%	Right side
+%
+%============================================================================%
+\begin{rightcolumn}
+%---------------------------------------------------------------------------------------
+%	PROFIL
+%----------------------------------------------------------------------------------------
+\cvsection{Profil}
+
+\vspace{5pt}
+
+\cvtext{Après un parcours professionnel riche en expériences diverses, j'ai décidé de vivre de ma passion qu'est l'informatique, et en particulier la programmation et le développement d'application.
+
+Ayant renforcé et élargi mes connaissances acquises en autodidacte depuis une dizaine d'années avec \href{https://openclassrooms.com/fr/paths/68-developpeur-dapplication-python}{une formation \textit{'spécialité Python - Django'}}, je suis prêt à mettre toutes mes compétences à votre service pour participer au développement de projets dans ce domaine.}
+
+\vspace{5pt}
+
+%---------------------------------------------------------------------------------------
+%	EXPERIENCE
+%----------------------------------------------------------------------------------------
+\cvsection{Parcours}
+
+\cvnewevent
+	{janvier 2019 - aujourd'hui}
+	{Développeur d'application}
+	{Freelance}
+	{\vspace{-7.5pt} \cvlist{
+ 		\item Conception d'architecture adaptée aux impératifs.\\[-19pt]
+ 		\item Développement en respectant les règles de codage.\\[-19pt]
+		\item Installation et rédaction de documentation.\\[-19pt]
+ 		\item Maintenance et évolution.
+ 	}}
+
+\cvnewevent
+	{septembre 2001 - août 2018}
+	{Instituteur}
+	{Éducation nationale}
+	{\vspace{-7.5pt} \cvlist{
+ 		\item Enseignement en cycle 2.\\[-19pt]
+ 		\item Enseignement auprès de public non francophone.
+ 	}}
+
+\cvnewevent
+	{septembre 1996 - août 2001}
+	{Technicien}
+	{DGA- Direction générale de l'armement}
+	{\vspace{-7.5pt} \cvlist{
+ 		\item Création et utilisation de dispositif électronique.\\[-19pt]
+ 		\item Maintenance d'appareil de mesure.
+ 	}}
+
+\vspace{5pt}
+%---------------------------------------------------------------------------------------
+%	LICENSE
+%----------------------------------------------------------------------------------------
+\cvsection{Formation}
+
+\cvneweventdip
+	{OpenClassrooms - 2019}
+	{\href{https://drive.google.com/open?id=1wHdYcLxh3ZbZAifbl8qyRqhhzMJIYcO3}{Développeur d'application - Python}}
+	{\href{https://drive.google.com/open?id=1wHdYcLxh3ZbZAifbl8qyRqhhzMJIYcO3}{Diplôme niveau Bac+3/4.}}
+
+\vspace{5pt}
+
+\cvneweventdip
+	{OpenClassrooms - 2017}
+	{\href{https://drive.google.com/open?id=1mo3ZDXMeHR8A9eLl2mBg0eK4-HIIhfmk}{Domaine de la programmation et du web}}
+	{\href{https://drive.google.com/open?id=1mo3ZDXMeHR8A9eLl2mBg0eK4-HIIhfmk}{Certifications de réussite.}}
+
+\vspace{5pt}
+
+\cvneweventdip
+	{Éducation Nationale - 2003}
+	{Institut de Formation des Maîtres}
+	{Certificat de fin d'études.}
+	
+\vspace{5pt}
+
+\cvneweventdip
+	{DGA - 1996}
+	{Centre de Formation des Armements Terrestres}
+	{Brevet de Formation Technique et Bac STL.}
+
+\vspace{15pt}
+%---------------------------------------------------------------------------------------
+%	WORKS
+%----------------------------------------------------------------------------------------
+\cvsection{Réalisations}
+
+\cvrealase
+	{En cours}
+	{\href{https://github.com/JBthePenguin/FarmManagement}{Outil de gestion pour la ferme \textit{en Ariège}}}
+	{\href{https://github.com/JBthePenguin/FarmManagement}{Application web spécifique}}
+	{\href{https://github.com/JBthePenguin/FarmManagement}{Conception, développement avec test et mise en place sur le réseau local.}}
+	{\cvlist {
+		\item \textit{Backend}: Python - Django\\[-19pt]
+		\item \textit{Frontend}: HTML/CSS - Bootstrap, Javascript - JQuery\\[-19pt]
+		\item \textit{Base de données, Versionning}: SQLite - Git\\[-19pt]
+		\item \textit{Installation}: VirtualBox - Ubuntu Server
+	}}
+
+\vspace{-17.5pt}
+
+\cvrealase
+	{2019}
+	{\href{https://github.com/JBthePenguin/PoilAuNezWebApp}{Site de la compagnie de clown théâtre \textit{Poil au nez}}}
+	{\href{https://github.com/JBthePenguin/PoilAuNezWebApp}{Application web - Site vitrine}}
+	{\href{https://github.com/JBthePenguin/PoilAuNezWebApp}{Conception, développement, test et mise en ligne sur Heroku.}}
+	{\cvlist {
+		\item \textit{Backend}: Python - Django\\[-19pt]
+		\item \textit{Frontend}: HTML/CSS - Bootstrap, Javascript - JQuery\\[-19pt]
+		\item \textit{Base de données, Versionning}: PostgreSQL - Git - TravisCI - selenium\\[-19pt]
+		\item \textit{Conception, Documentation, Installation}: UML - LaTeX - Herokucli
+	}}
+
+
+\vspace{-17.5pt}
+
+\cvrealase
+	{2018}
+	{\href{https://github.com/JBthePenguin/PurBeurreWebApp}{Application en interaction avec l'API \textit{OpenFoodFacts}}}
+	{\href{https://github.com/JBthePenguin/PurBeurreWebApp}{Application web - Projet de la formation}}
+	{\href{https://github.com/JBthePenguin/PurBeurreWebApp}{Conception, développement, test mise en ligne sur Heroku.}}
+	{\cvlist {
+		\item \textit{Backend}: Python - Django\\[-18.5pt]
+		\item \textit{Frontend}: HTML/CSS - Bootstrap, Javascript - JQuery\\[-18.5pt]
+		\item \textit{Base de données, Versionning}: PostgreSQL - Git - selenium\\[-18.5pt]
+		\item \textit{Conception, Documentation, Installation}: UML - LaTeX - Herokucli
+	}}
+
+\vspace{-16pt}
+
+\cvtext{
+		\href{https://github.com/JBthePenguin}{\textit{\textcolor{darkcol}{\texttt{Et d'autres...}}}}
+	}
+
+\end{rightcolumn}
+\end{paracol}
+\end{document}
