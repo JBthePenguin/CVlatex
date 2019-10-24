@@ -1,0 +1,1 @@
+![My cv october 2019](cv.png)
