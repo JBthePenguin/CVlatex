@@ -155,7 +155,7 @@
   \vspace{10pt}
   \hspace{1.5pt}
   \begin{tabular*}{1\mpwidth}{p{0.36\mpwidth} p{0.36\mpwidth}  r}
-  \href{https://github.com/JBthePenguin/}{\includegraphics[width=4mm, height=4.5mm]{#1}} & \href{https://twitter.com/JBthePenguin}{\includegraphics[width=4mm, height=4.5mm]{#2}} &	\href{https://www.linkedin.com/in/jean-baptiste-labaty-a5b084155/}{\includegraphics[width=4mm, height=4.5mm]{#3}}
+  \href{https://github.com/JBthePenguin/}{\includegraphics[width=4mm, height=4.5mm]{#1}} & \href{https://gitlab.com/JBthePenguin}{\includegraphics[width=4mm, height=4.5mm]{#2}} &	\href{https://www.linkedin.com/in/jean-baptiste-labaty-a5b084155/}{\includegraphics[width=4mm, height=4.5mm]{#3}}
 	\end{tabular*}%
 	\vspace{-40pt}
 }
@@ -189,6 +189,28 @@
 	\ifthenelse{\isempty{#5}}{}{
 		\vspace{-1.5pt}
 		{#5}
+	}
+	\vspace{14pt}
+}
+
+\newcommand{\cvrealasenew}[4] { 
+	% we wrap this part in a parbox, so title and description are not separated on a pagebreak
+	% if you need more control on page breaks, remove the parbox
+	\vspace{4pt}
+	\parbox{\mpwidth}{
+		\begin{tabular*}{1\mpwidth}{p{1\mpwidth} r}
+	 		\textcolor{black}{\textbf{#1}} & \\
+			\textcolor{maincol}{\textbf{#2}} & \\
+		\end{tabular*}
+		\ifthenelse{\isempty{#3}}{}{
+			\cvtext{#3}\\
+		}
+	  \vspace{4pt}
+	}
+  \vspace{-17.35pt}  
+	\ifthenelse{\isempty{#4}}{}{
+		\vspace{-1.5pt}
+		{#4}
 	}
 	\vspace{14pt}
 }
@@ -271,6 +293,7 @@
 %---------------------------------------------------------------------------------------
 %	SKILLS
 %----------------------------------------------------------------------------------------
+
 \cvsection{Compétences}
 
 \cvsubsection{Backend}
@@ -335,9 +358,11 @@
 
 \cvcontact{\href{mailto:jbthepenguin@netcourrier.com}{\textit{\underline{jbthepenguin@netcourrier.com}}}} {img/email.png} {}
 
-\cvcontact{\href{https://jbthepenguin.github.io/}{\textit{\underline{jbthepenguin.github.io}}}} {img/site.png} {}
+% \cvcontact{\href{https://jbthepenguin.github.io/}{\textit{\underline{jbthepenguin.github.io}}}} {img/site.png} {}
 
-\cvsociallink{img/github.png} {img/twitter.png} {img/linkedin.png}
+\vspace{17pt}
+
+\cvsociallink{img/github.png} {img/gitlab.png} {img/linkedin.png}
 
 \end{leftcolumn}
 
@@ -356,7 +381,7 @@
 
 \cvtext{Après un parcours professionnel riche en expériences diverses, j'ai décidé de vivre de ma passion qu'est l'informatique, et en particulier la programmation et le développement d'application.
 
-Ayant renforcé et élargi mes connaissances acquises en autodidacte depuis une dizaine d'années avec \href{https://openclassrooms.com/fr/paths/68-developpeur-dapplication-python}{une formation \textit{'spécialité Python - Django'}}, je suis prêt à mettre toutes mes compétences à votre service pour participer au développement de projets dans ce domaine.}
+Ayant renforcé et élargi mes connaissances acquises en autodidacte depuis plus d'une dizaine d'années avec \href{https://openclassrooms.com/fr/paths/68-developpeur-dapplication-python}{une formation \textit{'spécialité Python - Django'}}, je suis prêt à mettre toutes mes compétences à votre service pour répondre au mieux à vos besoins dans ce domaine.}
 
 \vspace{5pt}
 
@@ -423,7 +448,7 @@ Ayant renforcé et élargi mes connaissances acquises en autodidacte depuis une 
 
 \cvneweventdip
 	{DGA - 1996}
-	{Centre de Formation des Armements Terrestres}
+	{Centre de Formation de l'Armement Terrestre}
 	{Brevet de Formation Technique et Bac STL.}
 
 \vspace{15pt}
@@ -432,10 +457,10 @@ Ayant renforcé et élargi mes connaissances acquises en autodidacte depuis une 
 %----------------------------------------------------------------------------------------
 \cvsection{Réalisations}
 
-\cvrealase
-	{2019}
+\cvrealasenew
+	%{2019}
 	{\href{https://github.com/JBthePenguin/CanteraSongLyrics}{Application web pour l'association \textit{ARCAL 65}}}
-	{\href{https://github.com/JBthePenguin/CanteraSongLyrics}{Un répertoire de chants et un calendrier}}
+	{\href{https://github.com/JBthePenguin/CanteraSongLyrics}{Un répertoire de chants avec un calendrier d'évènement}}
 	{\href{https://github.com/JBthePenguin/CanteraSongLyrics}{Conception, développement, mise en ligne sur Heroku.}}
 	{\cvlist {
 		\item \textit{Backend}: Python - Django\\[-19pt]
@@ -446,8 +471,8 @@ Ayant renforcé et élargi mes connaissances acquises en autodidacte depuis une 
 
 \vspace{-17.5pt}
 
-\cvrealase
-	{2019}
+\cvrealasenew
+	%{2019}
 	{\href{https://github.com/JBthePenguin/FarmManagement}{Application web pour \textit{GAEC Aux légumes de bouche}}}
 	{\href{https://github.com/JBthePenguin/FarmManagement}{Un outil de gestion et d'analyse de l'exploitation}}
 	{\href{https://github.com/JBthePenguin/FarmManagement}{Conception, développement avec test et mise en place sur le réseau local.}}
@@ -460,8 +485,8 @@ Ayant renforcé et élargi mes connaissances acquises en autodidacte depuis une 
 
 \vspace{-17.5pt}
 
-\cvrealase
-	{2019}
+\cvrealasenew
+	%{2019}
 	{\href{https://github.com/JBthePenguin/PoilAuNezWebApp}{Application web pour la compagnie \textit{Poil au nez}}}
 	{\href{https://github.com/JBthePenguin/PoilAuNezWebApp}{Un site vitrine avec actualité, galerie et contact}}
 	{\href{https://github.com/JBthePenguin/PoilAuNezWebApp}{Conception, développement, test et mise en ligne sur Heroku.}}
@@ -475,9 +500,10 @@ Ayant renforcé et élargi mes connaissances acquises en autodidacte depuis une 
 \vspace{-16pt}
 
 \cvtext{
-		\href{https://github.com/JBthePenguin}{\textit{\textcolor{darkcol}{\texttt{Et d'autres...}}}}
-	}
-
+		%\href{https://github.com/JBthePenguin}{\textit{\textcolor{darkcol}{\texttt{Et d'autres...}}}}
+		\textit{\textcolor{darkcol}{\href{https://github.com/JBthePenguin/DjangoTradingBot}{DjangoTradingBot}, {\href{https://pypi.org/project/testcases-executor/}{testcases-executor}, {\href{https://gitlab.com/JBthePenguin/garradin-plugin-materiels}{garradin-plugin-materiels}, ...}}}}
+}
+ 
 \end{rightcolumn}
 \end{paracol}
 \end{document}

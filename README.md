@@ -1,1 +1,1 @@
-![My cv october 2019](cv_dec_2019.png)
+![My cv september 2021](cv_sept_2021.png)
